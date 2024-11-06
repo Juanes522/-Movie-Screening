@@ -30,5 +30,303 @@
 	<ui:include src="header.xhtml"></ui:include>
 
 
+	<div class="displayspace tabledisplay">
+		<div class="card crud-demo col-md-4">
+			<h:form id="formFestival">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<!-- actionListener="#{newA}" -->
+						<p:commandButton value="New Festival" icon="pi pi-plus"
+							update=":dialogsFes:manage-festival-content"
+							oncomplete="PF('manageFestivalDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":dialogsFes:manage-festival-content" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:dataTable id="dt-festival" widgetVar="dtFestival" var=""
+					value="#{festival}" reflow="true" styleClass="festival-table"
+					selection="#{selectedFestival}" rowKey="#{id}" paginator="true"
+					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="row">
+							<div class="col-6">
+								<div class="festival-table-header">
+									<span style="font-weight: bold">Festival</span>
+								</div>
+							</div>
+						</div>
+					</f:facet>
+
+
+					<p:column headerText="Festival Name" sortBy="#{fn}">
+						<h:outputText value="#{fn}" />
+					</p:column>
+					<p:column headerText="Date of foundation" sortBy="#{df}">
+						<h:outputText value="#{df}" />
+					</p:column>
+
+
+					<!-- botones actualizar eliminar por fila -->
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil"
+							update=":dialogsFes:manage-festival-content"
+							oncomplete="PF('manageFestivalDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<p:resetInput target=":dialogsFes:manage-festival-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this"
+							oncomplete="PF('deleteFestivalDialog').show()">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<!-- formulario cines -->
+			<h:form id="dialogsFes">
+				<p:dialog header="Festival Details" showEffect="fade" modal="true"
+					widgetVar="manageFestivalDialog" responsive="true"
+					draggable="false" resizable="false">
+
+					<p:outputPanel id="manage-festival-content" class="ui-fluid">
+
+						<p:outputPanel>
+
+
+							<div class="row" style="margin-top: 20px">
+								<div class="field" style="width: 350px">
+									<p:outputLabel>Festival Name</p:outputLabel>
+									<p:inputText id="festivalmaname" value="#{selectedFestival.fn}"
+										required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+								<div class="field" style="width: 350px">
+									<p:outputLabel>Date of foundation</p:outputLabel>
+									<p:calendar id="datefoundation" value="#{selectedDate}"
+										showOn="button" pattern="MM/dd/yyyy" required="true" />
+								</div>
+							</div>
+
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Save" icon="pi pi-check"
+							actionListener="#{saveFestival}" update="manage-festival-content"
+							process="manage-festival-content @this" />
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('manageFestivalDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="deleteFestivalDialog" showEffect="fade"
+					width="300" message="Delete the festival?" header="Confirm"
+					severity="warn">
+
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('deleteFestivalDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+
+		<!-- table contest-->
+		<!-- table contest-->
+		<!-- table contest-->
+
+		<div class="card crud-demo col-md-7">
+			<h:form id="formContest">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<!-- actionListener="#{newA}" -->
+						<p:commandButton value="New Contest" icon="pi pi-plus"
+							update=":dialogsContest:manage-contest-content"
+							oncomplete="PF('manageContestDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":dialogsContest:manage-contest-content" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:dataTable id="dt-contest" widgetVar="dtContest" var=""
+					value="#{contest}" reflow="true" styleClass="contest-table"
+					selection="#{selectedContest}" rowKey="#{id}" paginator="true"
+					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="row">
+							<div class="col-6">
+								<div class="contest-table-header">
+									<span style="font-weight: bold">Contests</span>
+								</div>
+							</div>
+						</div>
+					</f:facet>
+
+					<p:column headerText="Festival" sortBy="#{f}">
+						<h:outputText value="#{f}" />
+					</p:column>
+					<p:column headerText="Contest year" sortBy="#{cy}">
+						<h:outputText value="#{cy}" />
+					</p:column>
+					<p:column headerText="Organizer" sortBy="#{o}">
+						<h:outputText value="#{o}" />
+					</p:column>
+					<p:column headerText="Award name" sortBy="#{an}">
+						<h:outputText value="#{an}" />
+					</p:column>
+					<p:column headerText="Movie" sortBy="#{m}">
+						<h:outputText value="#{m}" />
+					</p:column>
+					<p:column headerText="Winner" sortBy="#{w}">
+						<h:outputText value="#{w}" />
+					</p:column>
+
+
+					<!-- botones actualizar eliminar por fila -->
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil"
+							update=":dialogsContest:manage-contest-content"
+							oncomplete="PF('manageContestDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<p:resetInput target=":dialogsContest:manage-contest-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this"
+							oncomplete="PF('deleteContestDialog').show()">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<!-- formulario salas -->
+			<h:form id="dialogsContest">
+				<p:dialog header="Contest Details" showEffect="fade" modal="true"
+					widgetVar="manageContestDialog" responsive="true" draggable="false"
+					resizable="false">
+
+					<p:outputPanel id="manage-contest-content" class="ui-fluid">
+
+						<p:outputPanel>
+
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Associated Festival</p:outputLabel>
+									<p:autoComplete id="associatedfestival" dropdown="true"
+										value="#{auto}" scrollHeight="10" required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Contest Year</p:outputLabel>
+									<p:calendar id="contestyear" value="#{selectedContest.y}"
+										showOn="button" pattern="MM/dd/yyyy" required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Organizer Name</p:outputLabel>
+									<p:inputText id="organizer" value="#{selectedContest.org}"
+										required="true" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Award Name</p:outputLabel>
+									<p:inputText id="awardname" value="#{selectedContest.an}"
+										required="true" />
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Associated Film Award</p:outputLabel>
+									<p:autoComplete id="associatedfilmaward" dropdown="true"
+										value="#{auto}" scrollHeight="10" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Award Winner</p:outputLabel>
+									<p:autoComplete id="awardwinner" dropdown="true"
+										value="#{auto}" scrollHeight="10" />
+								</div>
+
+							</div>
+
+
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Save" icon="pi pi-check"
+							actionListener="#{saveContest}" update="manage-contest-content"
+							process="manage-contest-content @this" />
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('manageContestDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="deleteContestDialog" showEffect="fade"
+					width="300" message="Delete the contest?" header="Confirm"
+					severity="warn">
+
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('deleteContestDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+	</div>
+
+
 </h:body>
 </html>
