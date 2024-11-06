@@ -64,14 +64,14 @@
 					</f:facet>
 
 
-					<p:column headerText="Cinema Name" sortBy="#{at}">
-						<h:outputText value="#{at}" />
+					<p:column headerText="Cinema Name" sortBy="#{cn}">
+						<h:outputText value="#{cn}" />
 					</p:column>
-					<p:column headerText="City" sortBy="#{w}">
-						<h:outputText value="#{w}" />
+					<p:column headerText="City" sortBy="#{c}">
+						<h:outputText value="#{c}" />
 					</p:column>
-					<p:column headerText="Direction" sortBy="#{dia}">
-						<h:outputText value="#{dia}" style="font-weight: 700">
+					<p:column headerText="Direction" sortBy="#{dir}">
+						<h:outputText value="#{dir}" style="font-weight: 700">
 						</h:outputText>
 					</p:column>
 
@@ -206,7 +206,7 @@
 						</div>
 					</f:facet>
 
-					<p:column headerText="Room Number" sortBy="#{r}">
+					<p:column headerText="Room Number" sortBy="#{rn}">
 						<h:outputText value="#{rn}" />
 					</p:column>
 					<p:column headerText="Capacity" sortBy="#{c}">
@@ -273,7 +273,7 @@
 								<div class="field">
 									<p:outputLabel>Associated Cinema</p:outputLabel>
 									<p:autoComplete id="associatedcinema" dropdown="true"
-										value="#{auto}" scrollHeight="10" />
+										value="#{auto}" scrollHeight="10" required="true"/>
 								</div>
 
 							</div>
