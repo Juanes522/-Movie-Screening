@@ -107,7 +107,7 @@
 							<div class="row" style="margin-top: 20px">
 								<div class="field" style="width: 350px">
 									<p:outputLabel>Festival Name</p:outputLabel>
-									<p:inputText id="festivalmaname" value="#{selectedFestival.fn}"
+									<p:inputText id="festivalname" value="#{selectedFestival.fn}"
 										required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
@@ -231,7 +231,7 @@
 			</h:form>
 
 
-			<!-- formulario salas -->
+			<!-- formulario certamen -->
 			<h:form id="dialogsContest">
 				<p:dialog header="Contest Details" showEffect="fade" modal="true"
 					widgetVar="manageContestDialog" responsive="true" draggable="false"
@@ -247,7 +247,7 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Festival</p:outputLabel>
 									<p:autoComplete id="associatedfestival" dropdown="true"
-										value="#{auto}" scrollHeight="10" required="true" />
+										value="#{selectedContest.af}" scrollHeight="10" required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
@@ -281,13 +281,13 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Film Award</p:outputLabel>
 									<p:autoComplete id="associatedfilmaward" dropdown="true"
-										value="#{auto}" scrollHeight="10" />
+										value="#{selectedContest.afa}" scrollHeight="10" />
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Award Winner</p:outputLabel>
 									<p:autoComplete id="awardwinner" dropdown="true"
-										value="#{auto}" scrollHeight="10" />
+										value="#{selectedContest.aw}" scrollHeight="10" />
 								</div>
 
 							</div>

@@ -29,5 +29,352 @@
 
 	<ui:include src="header.xhtml"></ui:include>
 
+
+	<div class="displayspace tabledisplay">
+		<div class="card crud-demo col-md-5">
+			<h:form id="formFilm">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<!-- actionListener="#{newA}" -->
+						<p:commandButton value="New Film" icon="pi pi-plus"
+							update=":dialogsFilm:manage-film-content"
+							oncomplete="PF('manageFilmDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":dialogsFilm:manage-film-content" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:dataTable id="dt-film" widgetVar="dtFilm" var="" value="#{film}"
+					reflow="true" styleClass="film-table" selection="#{selectedFilm}"
+					rowKey="#{id}" paginator="true" rows="10" rowSelectMode="add"
+					paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="row">
+							<div class="col-6">
+								<div class="film-table-header">
+									<span style="font-weight: bold">Films</span>
+								</div>
+							</div>
+						</div>
+					</f:facet>
+
+					<p:column headerText="Title" sortBy="#{t}">
+						<h:outputText value="#{t}" />
+					</p:column>
+					<p:column headerText="Year of production" sortBy="#{yp}">
+						<h:outputText value="#{yp}" />
+					</p:column>
+					<p:column headerText="Budget" sortBy="#{b}">
+						<h:outputText value="#{b}" />
+					</p:column>
+					<p:column headerText="Duration" sortBy="#{an}">
+						<h:outputText value="#{an}" />
+					</p:column>
+
+
+					<!-- botones actualizar eliminar por fila -->
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil"
+							update=":dialogsFilm:manage-film-content"
+							oncomplete="PF('manageFilmDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<p:resetInput target=":dialogsFilm:manage-film-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this"
+							oncomplete="PF('deleteFilmDialog').show()">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<!-- formulario certamen -->
+			<h:form id="dialogsFilm">
+				<p:dialog header="Film Details" showEffect="fade" modal="true"
+					widgetVar="manageFilmDialog" responsive="true" draggable="false"
+					resizable="false">
+
+					<p:outputPanel id="manage-film-content" class="ui-fluid">
+
+						<p:outputPanel>
+
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Title</p:outputLabel>
+									<p:inputText id="titlefilm" value="#{selectedFilm.title}"
+										required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Year of Production</p:outputLabel>
+									<p:spinner id="yearproduction" min="1900" max="2024"
+										value="#{selectedFilm.yearp}" required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Nationality</p:outputLabel>
+									<p:inputText id="nationality" value="#{selectedFilm.nat}"
+										required="true" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Budget</p:outputLabel>
+									<p:spinner id="budget" min="1000000"
+										value="#{selectedFilm.budget}" required="true" />
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Duration</p:outputLabel>
+									<p:inputText id="duration" value="#{selectedFilm.dur}"
+										required="true" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Choose Staff</p:outputLabel>
+									<p:selectCheckboxMenu id="choosestaff"
+										value="#{selectedFilm.staffselected}" scrollHeight="10"
+										filter="true">
+										<f:selectItems value="#{selectedFilm.staff}" />
+									</p:selectCheckboxMenu>
+								</div>
+
+							</div>
+
+
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Save" icon="pi pi-check"
+							actionListener="#{saveFilm}" update="manage-film-content"
+							process="manage-film-content @this" />
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('manageFilmDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="deleteFilmDialog" showEffect="fade"
+					width="300" message="Delete the film?" header="Confirm"
+					severity="warn">
+
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('deleteFilmDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+
+
+		<!-- table screening-->
+		<!-- table screening-->
+		<!-- table screening-->
+
+		<div class="card crud-demo col-md-6">
+			<h:form id="formScreening">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<!-- actionListener="#{newA}" -->
+						<p:commandButton value="New Screening" icon="pi pi-plus"
+							update=":dialogsScreening:manage-screening-content"
+							oncomplete="PF('manageScreeningDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":dialogsScreening:manage-screening-content" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:dataTable id="dt-screening" widgetVar="dtScreening" var=""
+					value="#{screening}" reflow="true" styleClass="screening-table"
+					selection="#{selectedScreening}" rowKey="#{id}" paginator="true"
+					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="row">
+							<div class="col-6">
+								<div class="screening-table-header">
+									<span style="font-weight: bold">Screenings</span>
+								</div>
+							</div>
+						</div>
+					</f:facet>
+
+					<p:column headerText="Movie" sortBy="#{m}">
+						<h:outputText value="#{m}" />
+					</p:column>
+					<p:column headerText="Cinema" sortBy="#{ci}">
+						<h:outputText value="#{ci}" />
+					</p:column>
+					<p:column headerText="Room" sortBy="#{o}">
+						<h:outputText value="#{o}" />
+					</p:column>
+					<p:column headerText="Release date" sortBy="#{rd}">
+						<h:outputText value="#{rd}" />
+					</p:column>
+					<p:column headerText="Viewers" sortBy="#{v}">
+						<h:outputText value="#{v}" />
+					</p:column>
+					<p:column headerText="Earnings" sortBy="#{e}">
+						<h:outputText value="#{e}" />
+					</p:column>
+
+
+					<!-- botones actualizar eliminar por fila -->
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil"
+							update=":dialogsScreening:manage-screening-content"
+							oncomplete="PF('manageScreeningDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<p:resetInput target=":dialogsScreening:manage-screening-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this"
+							oncomplete="PF('deleteScreeningDialog').show()">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<!-- formulario proyeccion -->
+			<h:form id="dialogsScreening">
+				<p:dialog header="Screening Details" showEffect="fade" modal="true"
+					widgetVar="manageScreeningDialog" responsive="true"
+					draggable="false" resizable="false">
+
+					<p:outputPanel id="manage-screening-content" class="ui-fluid">
+
+						<p:outputPanel>
+
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Movie</p:outputLabel>
+									<p:autoComplete id="screeningmovie" dropdown="true"
+										value="#{selectedScreening.m}" scrollHeight="10" required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Cinema</p:outputLabel>
+									<p:autoComplete id="screeningcinema" dropdown="true"
+										value="#{selectedScreening.c}" scrollHeight="10"
+										required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Associated Room</p:outputLabel>
+									<p:autoComplete id="screeningroom" dropdown="true"
+										value="#{selectedScreening.r}" scrollHeight="10"
+										required="true" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Release Date</p:outputLabel>
+									<p:calendar id="screeningdate" value="#{selectedScreening.d}"
+										showOn="button" pattern="MM/dd/yyyy" required="true" />
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Viewers</p:outputLabel>
+									<p:spinner id="screeningviewers" min="0" value="#{selectedScreening.v}"
+										required="true" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Earnings</p:outputLabel>
+									<p:spinner id="screeningearnings" min="0" value="#{selectedScreening.e}"
+										required="true" />
+								</div>
+
+							</div>
+
+
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Save" icon="pi pi-check"
+							actionListener="#{saveScreening}"
+							update="manage-screening-content"
+							process="manage-screening-content @this" />
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('manageScreeningDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="deleteScreeningDialog" showEffect="fade"
+					width="300" message="Delete the screening?" header="Confirm"
+					severity="warn">
+
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('deleteScreeningDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+
+
+
+	</div>
+
 </h:body>
 </html>

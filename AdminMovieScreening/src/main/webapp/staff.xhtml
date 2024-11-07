@@ -29,5 +29,298 @@
 
 	<ui:include src="header.xhtml"></ui:include>
 
+
+	<div class="displayspace tabledisplay">
+		<div class="card crud-demo col-md-5">
+			<h:form id="formStaff">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<!-- actionListener="#{newA}" -->
+						<p:commandButton value="New Staff" icon="pi pi-plus"
+							update=":dialogsStaff:manage-staff-content"
+							oncomplete="PF('manageStaffDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":dialogsStaff:manage-staff-content" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:dataTable id="dt-staff" widgetVar="dtStaff" var=""
+					value="#{staff}" reflow="true" styleClass="staff-table"
+					selection="#{selectedStaff}" rowKey="#{id}" paginator="true"
+					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="row">
+							<div class="col-6">
+								<div class="staff-table-header">
+									<span style="font-weight: bold">Staff</span>
+								</div>
+							</div>
+						</div>
+					</f:facet>
+
+					<p:column headerText="Name" sortBy="#{n}">
+						<h:outputText value="#{n}" />
+					</p:column>
+					<p:column headerText="Nationality" sortBy="#{nat}">
+						<h:outputText value="#{nat}" />
+					</p:column>
+					<p:column headerText="Sex" sortBy="#{s}">
+						<h:outputText value="#{s}" />
+					</p:column>
+
+
+					<!-- botones actualizar eliminar por fila -->
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil"
+							update=":dialogsStaff:manage-staff-content"
+							oncomplete="PF('manageStaffDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<p:resetInput target=":dialogsStaff:manage-staff-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this"
+							oncomplete="PF('deleteStaffDialog').show()">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<!-- formulario certamen -->
+			<h:form id="dialogsStaff">
+				<p:dialog header="Staff Details" showEffect="fade" modal="true"
+					widgetVar="manageStaffDialog" responsive="true" draggable="false"
+					resizable="false">
+
+					<p:outputPanel id="manage-staff-content" class="ui-fluid">
+
+						<p:outputPanel>
+
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Name</p:outputLabel>
+									<p:inputText id="namestaff" value="#{selectedStaff.name}"
+										required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Nationality</p:outputLabel>
+									<p:inputText id="nationalitystaff"
+										value="#{selectedStaff.nationality}" required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Sex</p:outputLabel>
+									<p:autoComplete id="sexstaff" dropdown="true"
+										value="#{selectedStaff.sex}" scrollHeight="10" required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Associated Work</p:outputLabel>
+									<p:autoComplete id="workstaff" dropdown="true"
+										value="#{selectedStaff.work}" scrollHeight="10"
+										required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Choose Awards</p:outputLabel>
+									<p:selectCheckboxMenu id="chooseawards"
+										value="#{selectedStaff.awardselected}" scrollHeight="10"
+										filter="true">
+										<f:selectItems value="#{selectedStaff.awards}" />
+									</p:selectCheckboxMenu>
+								</div>
+
+							</div>
+
+
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Save" icon="pi pi-check"
+							actionListener="#{saveStaff}" update="manage-staff-content"
+							process="manage-staff-content @this" />
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('manageStaffDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="deleteStaffDialog" showEffect="fade"
+					width="300" message="Delete the staff?" header="Confirm"
+					severity="warn">
+
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('deleteStaffDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+
+		<!-- table work-->
+		<!-- table work-->
+		<!-- table work-->
+
+		<div class="card crud-demo col-md-4">
+			<h:form id="formWork">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<!-- actionListener="#{newA}" -->
+						<p:commandButton value="New Work" icon="pi pi-plus"
+							update=":dialogsFes:manage-work-content"
+							oncomplete="PF('manageWorkDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":dialogsFes:manage-work-content" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:dataTable id="dt-work" widgetVar="dtWork" var="" value="#{work}"
+					reflow="true" styleClass="work-table" selection="#{selectedWork}"
+					rowKey="#{id}" paginator="true" rows="10" rowSelectMode="add"
+					paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="row">
+							<div class="col-6">
+								<div class="work-table-header">
+									<span style="font-weight: bold">Work</span>
+								</div>
+							</div>
+						</div>
+					</f:facet>
+
+
+					<p:column headerText="Work Name" sortBy="#{wn}">
+						<h:outputText value="#{wn}" />
+					</p:column>
+					<p:column headerText="Associated Movie" sortBy="#{am}">
+						<h:outputText value="#{am}" />
+					</p:column>
+
+
+					<!-- botones actualizar eliminar por fila -->
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil"
+							update=":dialogsFes:manage-work-content"
+							oncomplete="PF('manageWorkDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<p:resetInput target=":dialogsFes:manage-work-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this"
+							oncomplete="PF('deleteWorkDialog').show()">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<!-- formulario cines -->
+			<h:form id="dialogsFes">
+				<p:dialog header="Work Details" showEffect="fade" modal="true"
+					widgetVar="manageWorkDialog" responsive="true" draggable="false"
+					resizable="false">
+
+					<p:outputPanel id="manage-work-content" class="ui-fluid">
+
+						<p:outputPanel>
+
+
+							<div class="row" style="margin-top: 20px">
+								<div class="field" style="width: 350px">
+									<p:outputLabel>Work Name</p:outputLabel>
+									<p:inputText id="workname" value="#{selectedWork.wn}"
+										required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+								<div class="field" style="width: 350px">
+									<p:outputLabel>Associated Movie</p:outputLabel>
+									<p:autoComplete id="workassociatedmovie" dropdown="true"
+										value="#{selectedWork.am}" scrollHeight="10" required="true" />
+								</div>
+							</div>
+
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Save" icon="pi pi-check"
+							actionListener="#{saveWork}" update="manage-work-content"
+							process="manage-work-content @this" />
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('manageWorkDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="deleteWorkDialog" showEffect="fade"
+					width="300" message="Delete the work?" header="Confirm"
+					severity="warn">
+
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('deleteWorkDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+
+
+	</div>
+
+
+
 </h:body>
 </html>
