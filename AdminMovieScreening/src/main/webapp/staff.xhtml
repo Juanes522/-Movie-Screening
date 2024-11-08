@@ -202,10 +202,10 @@
 					<p:toolbarGroup>
 						<!-- actionListener="#{newA}" -->
 						<p:commandButton value="New Work" icon="pi pi-plus"
-							update=":dialogsFes:manage-work-content"
+							update=":dialogsWork:manage-work-content"
 							oncomplete="PF('manageWorkDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
-							<p:resetInput target=":dialogsFes:manage-work-content" />
+							<p:resetInput target=":dialogsWork:manage-work-content" />
 						</p:commandButton>
 
 					</p:toolbarGroup>
@@ -238,12 +238,12 @@
 					<!-- botones actualizar eliminar por fila -->
 					<p:column exportable="false">
 						<p:commandButton icon="pi pi-pencil"
-							update=":dialogsFes:manage-work-content"
+							update=":dialogsWork:manage-work-content"
 							oncomplete="PF('manageWorkDialog').show()"
 							styleClass="edit-button rounded-button ui-button-success"
 							process="@this">
 							<f:setPropertyActionListener value="#{s}" target="#{s}" />
-							<p:resetInput target=":dialogsFes:manage-work-content" />
+							<p:resetInput target=":dialogsWork:manage-work-content" />
 						</p:commandButton>
 						<p:commandButton class="ui-button-warning rounded-button"
 							icon="pi pi-trash" process="@this"
@@ -257,7 +257,7 @@
 
 
 			<!-- formulario cines -->
-			<h:form id="dialogsFes">
+			<h:form id="dialogsWork">
 				<p:dialog header="Work Details" showEffect="fade" modal="true"
 					widgetVar="manageWorkDialog" responsive="true" draggable="false"
 					resizable="false">
