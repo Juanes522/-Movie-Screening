@@ -32,74 +32,249 @@
 
 
 	<div class="displayspace tabledisplay">
-		<div class="card col-md-7">
+		<div class="card col-md-3">
 			<h:form>
 				<div class="displayRep">
 					<!-- Panel de botones a la izquierda -->
-					<div class="col-md-3 buttondisplay">
+					<div class=" buttondisplay">
 						<!-- Botón "Awards by person" abre el diálogo correspondiente -->
 						<p:commandButton value="Awards by person"
-							oncomplete="PF('awardsPersonDialog').show(); PF('selectionDialog').hide()"
-							style="width: 100%;" />
+							oncomplete="PF('awardsPersonDialog').show()" style="width: 100%;">
+						</p:commandButton>
 
-						<p:commandButton value="Films by director" style="width: 100%;" />
-						<p:commandButton value="Revenue per room" style="width: 100%;" />
-						<p:commandButton value="Screenings by cinema" style="width: 100%;" />
+						<p:commandButton value="Films by director"
+							oncomplete="PF('filmsDirectorDialog').show()"
+							style="width: 100%;">
+						</p:commandButton>
+
+						<p:commandButton value="Revenue per room"
+							oncomplete="PF('revenueRoomDialog').show()" style="width: 100%;">
+						</p:commandButton>
+
+						<p:commandButton value="Screenings by cinema"
+							oncomplete="PF('screeningsCinemaDialog').show()"
+							style="width: 100%;">
+						</p:commandButton>
 					</div>
 
 					<!-- Espacio de contenido dinámico a la derecha -->
-					<div class="col-md-8">
-						<!-- Diálogo inicial: Mensaje de selección -->
-						<p:dialog id="panelselect" widgetVar="selectionDialog"
-							modal="true" header="Selection" visible="true" showEffect="false"
-							closable="true" draggable="false" width="350px" height="50px">
-							<h:outputText value="Select a button to view content" />
-						</p:dialog>
+					<!-- <div class="col-md-8">-->
+					<!-- Diálogo inicial: Mensaje de selección -->
+					<p:dialog id="panelselect" widgetVar="selectionDialog" modal="true"
+						header="Selection" visible="true" showEffect="false"
+						closable="true" draggable="false" width="350px" height="50px">
+						<h:outputText value="Select a button to view content" />
+					</p:dialog>
 
 
 
 
-						<!-- Diálogo/form de "Awards by Person" oculto inicialmente -->
-						<h:form id="dialogAwardPerson">
-							<p:dialog header="Awards by Person" showEffect="fade" modal="true"
-								widgetVar="awardsPersonDialog" responsive="true" draggable="false"
-								resizable="false">
+					<!-- Diálogo/form de Awards by Person -->
+					<h:form id="dialogAwardPerson">
 
-								<p:outputPanel id="awardperson" class="ui-fluid">
+						<p:remoteCommand name="resetPersonName"
+							update="dialogAwardPerson:awardperson">
+							<p:resetInput target="dialogAwardPerson:personname"></p:resetInput>
 
-									<p:outputPanel>
+						</p:remoteCommand>
+
+						<p:dialog header="Awards by Person" showEffect="fade" modal="true"
+							widgetVar="awardsPersonDialog" onHide="resetPersonName()"
+							responsive="true" draggable="false" resizable="false">
+
+							<p:outputPanel id="awardperson" class="ui-fluid">
+
+								<p:outputPanel>
 
 
-										<div class="row" style="margin-top: 20px">
-											<div class="field" style="width: 350px">
-												<p:outputLabel>Person Name</p:outputLabel>
-												<p:inputText id="workname" required="true" />
-												<!-- completeMethod="#{autoCompleteView.completeText}" -->
-											</div>
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:outputLabel>Person Name</p:outputLabel>
+											<p:inputText id="personname" required="true" value="" />
+											<!-- completeMethod="#{autoCompleteView.completeText}" -->
 										</div>
+									</div>
 
-										<div class="row" style="margin-top: 20px">
-											<div class="field" style="width: 350px">
-												<p:commandButton value="Submit" />
-											</div>
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:commandButton value="Submit Award by Person" />
 										</div>
-										
-										<div class="row" style="margin-top: 20px">
-											<div class="field" style="width: 350px">
-												<p:inputTextarea id="inputTextAreaAwardsPerson" rows="10" 
-												autoResize="false" disabled="true" style="overflow: auto;"/>
-											</div>
-										</div>
-										
+									</div>
 
-									</p:outputPanel>
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:inputTextarea id="inputTextAreaAwardsPerson" rows="10"
+												autoResize="false" disabled="true" style="overflow: auto;"
+												value="" />
+										</div>
+									</div>
+
+
 								</p:outputPanel>
-							</p:dialog>
-						</h:form>
+							</p:outputPanel>
+						</p:dialog>
+					</h:form>
+
+
+					<!-- Diálogo/form de Films by Director -->
+					<h:form id="dialogFilmsDirector">
+
+						<p:remoteCommand name="resetDirectorName"
+							update="dialogFilmsDirector:filmdirector">
+							<p:resetInput target="dialogFilmsDirector:directorname"></p:resetInput>
+						</p:remoteCommand>
+
+						<p:dialog header="Films by Director" showEffect="fade"
+							modal="true" widgetVar="filmsDirectorDialog"
+							onHide="resetDirectorName()" responsive="true" draggable="false"
+							resizable="false">
+
+							<p:outputPanel id="filmdirector" class="ui-fluid">
+
+								<p:outputPanel>
+
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:outputLabel>Director Name</p:outputLabel>
+											<p:inputText id="directorname" required="true" />
+											<!-- completeMethod="#{autoCompleteView.completeText}" -->
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:outputLabel>Work</p:outputLabel>
+											<p:inputText id="directorwork" value="Director"
+												disabled="true" />
+											<!-- completeMethod="#{autoCompleteView.completeText}" -->
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:commandButton value="Submit Film by Director" />
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:inputTextarea id="inputTextAreaFilmDirector" rows="10"
+												autoResize="false" disabled="true" style="overflow: auto;" />
+										</div>
+									</div>
+
+
+								</p:outputPanel>
+							</p:outputPanel>
+						</p:dialog>
+					</h:form>
 
 
 
-					</div>
+					<!-- Diálogo/form de Revenue per Room -->
+					<h:form id="dialogRevenueRoom">
+
+						<p:remoteCommand name="resetRevenueRoom"
+							update="dialogRevenueRoom:roomrevenue">
+							<p:resetInput target="dialogRevenueRoom:cinemaname"></p:resetInput>
+						</p:remoteCommand>
+
+						<p:dialog header="Revenue per Room" showEffect="fade" modal="true"
+							widgetVar="revenueRoomDialog" onHide="resetRevenueRoom()"
+							responsive="true" draggable="false" resizable="false">
+
+							<p:outputPanel id="roomrevenue" class="ui-fluid">
+
+								<p:outputPanel>
+
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:outputLabel>Cinema Name</p:outputLabel>
+											<p:inputText id="cinemaname" required="true" />
+											<!-- completeMethod="#{autoCompleteView.completeText}" -->
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:outputLabel>Select Room</p:outputLabel>
+											<p:autoComplete id="selectedroomreport" dropdown="true"
+												scrollHeight="10" required="true" />
+											<!-- completeMethod="#{autoCompleteView.completeText}" -->
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:commandButton value="Submit Revenue per Room" />
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:inputTextarea id="inputTextAreaRevenueRoom" rows="10"
+												autoResize="false" disabled="true" style="overflow: auto;" />
+										</div>
+									</div>
+
+
+								</p:outputPanel>
+							</p:outputPanel>
+						</p:dialog>
+					</h:form>
+
+					<!-- Diálogo/form de Screenings by Cinema -->
+					<h:form id="dialogScreeningsCinema">
+
+						<p:remoteCommand name="resetScreeningsCinema"
+							update="dialogScreeningsCinema:cinemascreening">
+							<p:resetInput target="dialogScreeningsCinema:cinemanamescreening"></p:resetInput>
+
+						</p:remoteCommand>
+
+						<p:dialog header="Screenings by Cinema" showEffect="fade"
+							modal="true" widgetVar="screeningsCinemaDialog"
+							onHide="resetScreeningsCinema()" responsive="true"
+							draggable="false" resizable="false">
+
+							<p:outputPanel id="cinemascreening" class="ui-fluid">
+
+								<p:outputPanel>
+
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:outputLabel>Cinema Name</p:outputLabel>
+											<p:inputText id="cinemanamescreening" required="true"
+												value="" />
+											<!-- completeMethod="#{autoCompleteView.completeText}" -->
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:commandButton value="Submit Screenings by Cinema" />
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:inputTextarea id="inputTextAreaScreenigs" rows="10"
+												autoResize="false" disabled="true" style="overflow: auto;"
+												value="" />
+										</div>
+									</div>
+
+
+								</p:outputPanel>
+							</p:outputPanel>
+						</p:dialog>
+					</h:form>
+
+					<!--  </div>-->
+
 				</div>
 			</h:form>
 		</div>
