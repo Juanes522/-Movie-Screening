@@ -30,8 +30,9 @@
 	<ui:include src="header.xhtml"></ui:include>
 
 
-	<div class="displayspace tabledisplay">
-		<div class="card crud-demo col-md-4">
+	<div class="displayspace tabledisplayF">
+
+		<div class="card crud-demo col-md-3">
 			<h:form id="formFestival">
 				<p:growl id="messages" showDetail="true" />
 
@@ -158,7 +159,7 @@
 		<!-- table contest-->
 		<!-- table contest-->
 
-		<div class="card crud-demo col-md-7">
+		<div class="card crud-demo col-md-3">
 			<h:form id="formContest">
 				<p:growl id="messages" showDetail="true" />
 
@@ -199,15 +200,6 @@
 					<p:column headerText="Organizer" sortBy="#{o}">
 						<h:outputText value="#{o}" />
 					</p:column>
-					<p:column headerText="Award name" sortBy="#{an}">
-						<h:outputText value="#{an}" />
-					</p:column>
-					<p:column headerText="Movie" sortBy="#{m}">
-						<h:outputText value="#{m}" />
-					</p:column>
-					<p:column headerText="Winner" sortBy="#{w}">
-						<h:outputText value="#{w}" />
-					</p:column>
 
 
 					<!-- botones actualizar eliminar por fila -->
@@ -247,7 +239,8 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Festival</p:outputLabel>
 									<p:autoComplete id="associatedfestival" dropdown="true"
-										value="#{selectedContest.af}" scrollHeight="10" required="true" />
+										value="#{selectedContest.af}" scrollHeight="10"
+										required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
@@ -268,30 +261,7 @@
 										required="true" />
 								</div>
 
-								<div class="field col-md-6">
-									<p:outputLabel>Award Name</p:outputLabel>
-									<p:inputText id="awardname" value="#{selectedContest.an}"
-										required="true" />
-								</div>
-
 							</div>
-
-							<div class="row" style="margin-top: 20px">
-
-								<div class="field col-md-6">
-									<p:outputLabel>Associated Film Award</p:outputLabel>
-									<p:autoComplete id="associatedfilmaward" dropdown="true"
-										value="#{selectedContest.afa}" scrollHeight="10" />
-								</div>
-
-								<div class="field col-md-6">
-									<p:outputLabel>Award Winner</p:outputLabel>
-									<p:autoComplete id="awardwinner" dropdown="true"
-										value="#{selectedContest.aw}" scrollHeight="10" />
-								</div>
-
-							</div>
-
 
 						</p:outputPanel>
 					</p:outputPanel>
@@ -325,8 +295,155 @@
 				</p:confirmDialog>
 			</h:form>
 		</div>
+
+		<!-- table award-->
+		<!-- table award-->
+		<!-- table award-->
+
+		<div class="card crud-demo col-md-4">
+			<h:form id="formAward">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<!-- actionListener="#{newA}" -->
+						<p:commandButton value="New Award" icon="pi pi-plus"
+							update=":dialogsAward:manage-award-content"
+							oncomplete="PF('manageAwardDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":dialogsAward:manage-award-content" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:dataTable id="dt-award" widgetVar="dtAward" var=""
+					value="#{award}" reflow="true" styleClass="award-table"
+					selection="#{selectedAward}" rowKey="#{id}" paginator="true"
+					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="row">
+							<div class="col-6">
+								<div class="award-table-header">
+									<span style="font-weight: bold">Awards</span>
+								</div>
+							</div>
+						</div>
+					</f:facet>
+
+					<p:column headerText="Contest" sortBy="#{co}">
+						<h:outputText value="#{co}" />
+					</p:column>
+					<p:column headerText="Award Name" sortBy="#{an}">
+						<h:outputText value="#{an}" />
+					</p:column>
+					<p:column headerText="Film" sortBy="#{fi}">
+						<h:outputText value="#{fi}" />
+					</p:column>
+					<p:column headerText="Winner" sortBy="#{wi}">
+						<h:outputText value="#{wi}" />
+					</p:column>
+
+
+					<!-- botones actualizar eliminar por fila -->
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil"
+							update=":dialogsAward:manage-award-content"
+							oncomplete="PF('manageAwardDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success"
+							process="@this">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<p:resetInput target=":dialogsAward:manage-award-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button"
+							icon="pi pi-trash" process="@this"
+							oncomplete="PF('deleteAwardDialog').show()">
+							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<!-- formulario certamen -->
+			<h:form id="dialogsAward">
+				<p:dialog header="Award Details" showEffect="fade" modal="true"
+					widgetVar="manageAwardDialog" responsive="true" draggable="false"
+					resizable="false">
+
+					<p:outputPanel id="manage-award-content" class="ui-fluid">
+
+						<p:outputPanel>
+
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Associated Contest</p:outputLabel>
+									<p:autoComplete id="associatedcontestaward" dropdown="true"
+										value="#{selectedAward.ac}" scrollHeight="10" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Award Name</p:outputLabel>
+									<p:inputText id="awardname" value="#{selectedAward.an}"
+										required="true" />
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
+									<p:outputLabel>Associated Film</p:outputLabel>
+									<p:autoComplete id="associatedfilmaward" dropdown="true"
+										value="#{selectedAward.afa}" scrollHeight="10" />
+								</div>
+
+								<div class="field col-md-6">
+									<p:outputLabel>Associated Staff Winner</p:outputLabel>
+									<p:autoComplete id="awardwinner" dropdown="true"
+										value="#{selectedAward.aw}" scrollHeight="10" />
+								</div>
+
+							</div>
+
+						</p:outputPanel>
+					</p:outputPanel>
+
+					<f:facet name="footer">
+						<p:commandButton value="Save" icon="pi pi-check"
+							actionListener="#{saveAward}" update="manage-award-content"
+							process="manage-award-content @this" />
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							onclick="PF('manageAwardDialog').hide()"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+
+				<p:confirmDialog widgetVar="deleteAwardDialog" showEffect="fade"
+					width="300" message="Delete the award?" header="Confirm"
+					severity="warn">
+
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('deleteAwardDialog').hide()" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+
+
 	</div>
-
-
 </h:body>
 </html>
