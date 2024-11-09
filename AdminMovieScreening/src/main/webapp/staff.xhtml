@@ -134,6 +134,18 @@
 								</div>
 
 								<div class="field col-md-6">
+									<p:outputLabel>Associated Work</p:outputLabel>
+									<p:autoComplete id="workstaff" dropdown="true"
+										value="#{selectedStaff.work}" scrollHeight="10"
+										required="true" />
+									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+								</div>
+
+							</div>
+
+							<div class="row" style="margin-top: 20px">
+
+								<div class="field col-md-6">
 									<p:outputLabel>Choose Awards</p:outputLabel>
 									<p:selectCheckboxMenu id="chooseawards"
 										value="#{selectedStaff.awardselected}" scrollHeight="10"
@@ -143,7 +155,6 @@
 								</div>
 
 							</div>
-
 
 
 						</p:outputPanel>
@@ -219,8 +230,8 @@
 					<p:column headerText="Work Name" sortBy="#{wn}">
 						<h:outputText value="#{wn}" />
 					</p:column>
-					<p:column headerText="Associated Person" sortBy="#{ap}">
-						<h:outputText value="#{ap}" />
+					<p:column headerText="Associated Movie" sortBy="#{am}">
+						<h:outputText value="#{am}" />
 					</p:column>
 
 
@@ -267,9 +278,9 @@
 
 							<div class="row" style="margin-top: 20px">
 								<div class="field" style="width: 350px">
-									<p:outputLabel>Associated Person</p:outputLabel>
-									<p:autoComplete id="workassociatedperson" dropdown="true"
-										value="#{selectedWork.ap}" scrollHeight="10" required="true" />
+									<p:outputLabel>Associated Movie</p:outputLabel>
+									<p:autoComplete id="workassociatedmovie" dropdown="true"
+										value="#{selectedWork.am}" scrollHeight="10" required="true" />
 								</div>
 							</div>
 
