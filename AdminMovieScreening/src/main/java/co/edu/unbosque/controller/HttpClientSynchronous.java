@@ -12,14 +12,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import co.edu.unbosque.model.persistence.SalaDAO;
-
 public class HttpClientSynchronous {
 	private static final HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1)
 			.connectTimeout(Duration.ofSeconds(10)).build();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-
 	}
 
 	public static String doGet(String url) {

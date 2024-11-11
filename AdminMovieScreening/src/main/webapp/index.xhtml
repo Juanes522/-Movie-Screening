@@ -186,9 +186,9 @@
 
 				<p:toolbar>
 					<p:toolbarGroup>
-						<!-- actionListener="#{newA}" -->
+
 						<p:commandButton value="New Room" icon="pi pi-plus"
-							actionListener="#{SalaBean.openNew}"
+							actionListener="#{FileBean.openNew}"
 							update=":dialogsRoom:manage-room-content"
 							oncomplete="PF('manageRoomDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
@@ -199,8 +199,8 @@
 				</p:toolbar>
 
 				<p:dataTable id="dt-room" widgetVar="dtRoom" var="SalaDTO"
-					value="#{SalaBean.sdao.salas}" reflow="true"
-					styleClass="room-table" selection="#{SalaBean.selectedSalas}"
+					value="#{FileBean.sdao.salas}" reflow="true"
+					styleClass="room-table" selection="#{FileBean.selectedSalas}"
 					rowKey="#{SalaDTO.cine}" paginator="true" rows="10"
 					rowSelectMode="add" paginatorPosition="bottom">
 
@@ -233,14 +233,14 @@
 							styleClass="edit-button rounded-button ui-button-success"
 							process="@this">
 							<f:setPropertyActionListener value="#{SalaDTO}"
-								target="#{SalaBean.selectedSala}" />
+								target="#{FileBean.selectedSala}" />
 							<p:resetInput target=":dialogsRoom:manage-room-content" />
 						</p:commandButton>
 						<p:commandButton class="ui-button-warning rounded-button"
 							icon="pi pi-trash" process="@this"
 							oncomplete="PF('deleteRoomDialog').show()">
 							<f:setPropertyActionListener value="#{SalaDTO}"
-								target="#{SalaBean.selectedSala}" />
+								target="#{FileBean.selectedSala}" />
 						</p:commandButton>
 					</p:column>
 
@@ -264,7 +264,7 @@
 								<div class="field">
 									<p:outputLabel>Room Number</p:outputLabel>
 									<p:spinner id="roomnumber" min="0"
-										value="#{SalaBean.selectedSala.numeroSala}" required="true" />
+										value="#{FileBean.selectedSala.numeroSala}" required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
@@ -274,7 +274,7 @@
 								<div class="field">
 									<p:outputLabel>Capacity</p:outputLabel>
 									<p:spinner id="capacity" min="0"
-										value="#{SalaBean.selectedSala.capacidad}" required="true" />
+										value="#{FileBean.selectedSala.capacidad}" required="true" />
 								</div>
 							</div>
 
@@ -283,8 +283,8 @@
 								<div class="field">
 									<p:outputLabel>Associated Cinema</p:outputLabel>
 									<p:autoComplete id="associatedcinema" dropdown="true"
-										value="#{SalaBean.selectedSala.cine}" scrollHeight="80"
-										completeMethod="#{SalaBean.buscarNombres}" required="true" />
+										value="#{FileBean.selectedSala.cine}" scrollHeight="80"
+										completeMethod="#{FileBean.buscarNombres}" required="true" />
 								</div>
 
 							</div>
@@ -295,7 +295,7 @@
 
 					<f:facet name="footer">
 						<p:commandButton value="Save" icon="pi pi-check"
-							actionListener="#{SalaBean.saveSala}"
+							actionListener="#{FileBean.saveSala}"
 							update="manage-room-content" process="manage-room-content @this" />
 						<p:commandButton value="Cancel" icon="pi pi-times"
 							onclick="PF('manageRoomDialog').hide()"
@@ -308,7 +308,7 @@
 					severity="warn">
 
 					<p:commandButton value="Yes" icon="pi pi-check"
-						actionListener="#{SalaBean.deleteSala}" process="@this"
+						actionListener="#{FileBean.deleteSala}" process="@this"
 						oncomplete="PF('deleteRoomDialog').hide()" />
 
 					<p:commandButton value="No" type="button"

@@ -13,9 +13,11 @@ import co.edu.unbosque.model.CineDTO;
 public class CineDAO {
 
 	private ArrayList<CineDTO> cines;
+	private SalaDAO sdao;
 
 	public CineDAO() {
 		cines = obtenerCines();
+		sdao = new SalaDAO();
 	}
 
 	public ArrayList<CineDTO> obtenerCines() {
@@ -59,6 +61,7 @@ public class CineDAO {
 
 		HttpClientSynchronous.doGet("http://localhost:8081/user/deleteCine?name=" + ob.getId());
 		cines = obtenerCines();
+		sdao.setSalas(sdao.obtenerSalas());
 
 	}
 }

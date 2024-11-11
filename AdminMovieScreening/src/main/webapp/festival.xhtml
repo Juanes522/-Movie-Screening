@@ -38,8 +38,9 @@
 
 				<p:toolbar>
 					<p:toolbarGroup>
-						<!-- actionListener="#{newA}" -->
+
 						<p:commandButton value="New Festival" icon="pi pi-plus"
+							actionListener="#{FileBean.openNew}"
 							update=":dialogsFes:manage-festival-content"
 							oncomplete="PF('manageFestivalDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
@@ -49,10 +50,11 @@
 					</p:toolbarGroup>
 				</p:toolbar>
 
-				<p:dataTable id="dt-festival" widgetVar="dtFestival" var=""
-					value="#{festival}" reflow="true" styleClass="festival-table"
-					selection="#{selectedFestival}" rowKey="#{id}" paginator="true"
-					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+				<p:dataTable id="dt-festival" widgetVar="dtFestival"
+					var="FestivalDTO" value="#{FileBean.fdao.festivales}" reflow="true"
+					styleClass="festival-table" selection="#{FileBean.selectedAles}"
+					rowKey="#{FestivalDTO.id}" paginator="true" rows="10"
+					rowSelectMode="add" paginatorPosition="bottom">
 
 					<f:facet name="header">
 						<div class="row">
@@ -65,11 +67,12 @@
 					</f:facet>
 
 
-					<p:column headerText="Festival Name" sortBy="#{fn}">
-						<h:outputText value="#{fn}" />
+					<p:column headerText="Festival Name" sortBy="#{FestivalDTO.id}">
+						<h:outputText value="#{FestivalDTO.id}" />
 					</p:column>
-					<p:column headerText="Date of foundation" sortBy="#{df}">
-						<h:outputText value="#{df}" />
+					<p:column headerText="Date of foundation"
+						sortBy="#{FestivalDTO.fundacion}">
+						<h:outputText value="#{FestivalDTO.fundacion}" />
 					</p:column>
 
 
@@ -80,13 +83,15 @@
 							oncomplete="PF('manageFestivalDialog').show()"
 							styleClass="edit-button rounded-button ui-button-success"
 							process="@this">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{FestivalDTO}"
+								target="#{FileBean.selectedFest}" />
 							<p:resetInput target=":dialogsFes:manage-festival-content" />
 						</p:commandButton>
 						<p:commandButton class="ui-button-warning rounded-button"
 							icon="pi pi-trash" process="@this"
 							oncomplete="PF('deleteFestivalDialog').show()">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{FestivalDTO}"
+								target="#{FileBean.selectedFest}" />
 						</p:commandButton>
 					</p:column>
 
@@ -108,8 +113,8 @@
 							<div class="row" style="margin-top: 20px">
 								<div class="field" style="width: 350px">
 									<p:outputLabel>Festival Name</p:outputLabel>
-									<p:inputText id="festivalname" value="#{selectedFestival.fn}"
-										required="true" />
+									<p:inputText id="festivalname"
+										value="#{FileBean.selectedFest.id}" required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 							</div>
@@ -117,8 +122,9 @@
 							<div class="row" style="margin-top: 20px">
 								<div class="field" style="width: 350px">
 									<p:outputLabel>Date of foundation</p:outputLabel>
-									<p:calendar id="datefoundation" value="#{selectedDate}"
-										showOn="button" pattern="MM/dd/yyyy" required="true" />
+									<p:calendar id="datefoundation"
+										value="#{FileBean.selectedFest.fundacion}" showOn="button"
+										pattern="MM/dd/yyyy" required="true" />
 								</div>
 							</div>
 
@@ -127,7 +133,8 @@
 
 					<f:facet name="footer">
 						<p:commandButton value="Save" icon="pi pi-check"
-							actionListener="#{saveFestival}" update="manage-festival-content"
+							actionListener="#{FileBean.saveFest}"
+							update="manage-festival-content"
 							process="manage-festival-content @this" />
 						<p:commandButton value="Cancel" icon="pi pi-times"
 							onclick="PF('manageFestivalDialog').hide()"
@@ -139,6 +146,9 @@
 					width="300" message="Delete the festival?" header="Confirm"
 					severity="warn">
 
+					<p:commandButton value="Yes" icon="pi pi-check"
+						actionListener="#{FileBean.deleteFest}" process="@this"
+						oncomplete="PF('deleteFestivalDialog').hide()" />
 
 					<p:commandButton value="No" type="button"
 						styleClass="ui-button-secondary" icon="pi pi-times"
@@ -165,8 +175,9 @@
 
 				<p:toolbar>
 					<p:toolbarGroup>
-						<!-- actionListener="#{newA}" -->
+
 						<p:commandButton value="New Contest" icon="pi pi-plus"
+							actionListener="#{FileBean.openNew}"
 							update=":dialogsContest:manage-contest-content"
 							oncomplete="PF('manageContestDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
@@ -176,10 +187,11 @@
 					</p:toolbarGroup>
 				</p:toolbar>
 
-				<p:dataTable id="dt-contest" widgetVar="dtContest" var=""
-					value="#{contest}" reflow="true" styleClass="contest-table"
-					selection="#{selectedContest}" rowKey="#{id}" paginator="true"
-					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+				<p:dataTable id="dt-contest" widgetVar="dtContest" var="CertamenDTO"
+					value="#{FileBean.edao.certamenes}" reflow="true"
+					styleClass="contest-table" selection="#{FileBean.selectedCers}"
+					rowKey="#{CertamenDTO.festival}" paginator="true" rows="10"
+					rowSelectMode="add" paginatorPosition="bottom">
 
 					<f:facet name="header">
 						<div class="row">
@@ -191,14 +203,15 @@
 						</div>
 					</f:facet>
 
-					<p:column headerText="Festival" sortBy="#{f}">
-						<h:outputText value="#{f}" />
+					<p:column headerText="Festival" sortBy="#{CertamenDTO.festival}">
+						<h:outputText value="#{CertamenDTO.festival}" />
 					</p:column>
-					<p:column headerText="Contest year" sortBy="#{cy}">
-						<h:outputText value="#{cy}" />
+					<p:column headerText="Contest year" sortBy="#{CertamenDTO.ano}">
+						<h:outputText value="#{CertamenDTO.ano}" />
 					</p:column>
-					<p:column headerText="Organizer" sortBy="#{o}">
-						<h:outputText value="#{o}" />
+					<p:column headerText="Organizer"
+						sortBy="#{CertamenDTO.organizador}">
+						<h:outputText value="#{CertamenDTO.organizador}" />
 					</p:column>
 
 
@@ -209,13 +222,15 @@
 							oncomplete="PF('manageContestDialog').show()"
 							styleClass="edit-button rounded-button ui-button-success"
 							process="@this">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{CertamenDTO}"
+								target="#{FileBean.selectedCer}" />
 							<p:resetInput target=":dialogsContest:manage-contest-content" />
 						</p:commandButton>
 						<p:commandButton class="ui-button-warning rounded-button"
 							icon="pi pi-trash" process="@this"
 							oncomplete="PF('deleteContestDialog').show()">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{CertamenDTO}"
+								target="#{FileBean.selectedCer}" />
 						</p:commandButton>
 					</p:column>
 
@@ -239,15 +254,15 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Festival</p:outputLabel>
 									<p:autoComplete id="associatedfestival" dropdown="true"
-										value="#{selectedContest.af}" scrollHeight="10"
-										required="true" />
+										value="#{FileBean.selectedCer.festival}" scrollHeight="50"
+										required="true" completeMethod="#{FileBean.buscarFestival}" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Contest Year</p:outputLabel>
-									<p:calendar id="contestyear" value="#{selectedContest.y}"
-										showOn="button" pattern="MM/dd/yyyy" required="true" />
+									<p:spinner id="contestyear" min="1900" max="2024"
+										value="#{FileBean.selectedCer.ano}" required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
@@ -257,8 +272,8 @@
 
 								<div class="field col-md-6">
 									<p:outputLabel>Organizer Name</p:outputLabel>
-									<p:inputText id="organizer" value="#{selectedContest.org}"
-										required="true" />
+									<p:inputText id="organizer"
+										value="#{FileBean.selectedCer.organizador}" required="true" />
 								</div>
 
 							</div>
@@ -268,7 +283,8 @@
 
 					<f:facet name="footer">
 						<p:commandButton value="Save" icon="pi pi-check"
-							actionListener="#{saveContest}" update="manage-contest-content"
+							actionListener="#{FileBean.addCertamen}"
+							update="manage-contest-content"
 							process="manage-contest-content @this" />
 						<p:commandButton value="Cancel" icon="pi pi-times"
 							onclick="PF('manageContestDialog').hide()"
@@ -280,6 +296,9 @@
 					width="300" message="Delete the contest?" header="Confirm"
 					severity="warn">
 
+					<p:commandButton value="Yes" icon="pi pi-check"
+						actionListener="#{FileBean.deleteCertamen}" process="@this"
+						oncomplete="PF('deleteRoomDialog').hide()" />
 
 					<p:commandButton value="No" type="button"
 						styleClass="ui-button-secondary" icon="pi pi-times"
@@ -306,8 +325,9 @@
 
 				<p:toolbar>
 					<p:toolbarGroup>
-						<!-- actionListener="#{newA}" -->
+
 						<p:commandButton value="New Award" icon="pi pi-plus"
+							actionListener="#{FileBean.openNew}"
 							update=":dialogsAward:manage-award-content"
 							oncomplete="PF('manageAwardDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
@@ -317,10 +337,11 @@
 					</p:toolbarGroup>
 				</p:toolbar>
 
-				<p:dataTable id="dt-award" widgetVar="dtAward" var=""
-					value="#{award}" reflow="true" styleClass="award-table"
-					selection="#{selectedAward}" rowKey="#{id}" paginator="true"
-					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+				<p:dataTable id="dt-award" widgetVar="dtAward" var="PremioDTO"
+					value="#{FileBean.adao.premios}" reflow="true"
+					styleClass="award-table" selection="#{FileBean.selectedAws}"
+					rowKey="#{PremioDTO.id}" paginator="true" rows="10"
+					rowSelectMode="add" paginatorPosition="bottom">
 
 					<f:facet name="header">
 						<div class="row">
@@ -332,17 +353,17 @@
 						</div>
 					</f:facet>
 
-					<p:column headerText="Contest" sortBy="#{co}">
-						<h:outputText value="#{co}" />
+					<p:column headerText="Contest" sortBy="#{PremioDTO.certamen}">
+						<h:outputText value="#{PremioDTO.certamen}" />
 					</p:column>
-					<p:column headerText="Award Name" sortBy="#{an}">
-						<h:outputText value="#{an}" />
+					<p:column headerText="Award Name" sortBy="#{PremioDTO.premio}">
+						<h:outputText value="#{PremioDTO.premio}" />
 					</p:column>
-					<p:column headerText="Film" sortBy="#{fi}">
-						<h:outputText value="#{fi}" />
+					<p:column headerText="Film" sortBy="#{PremioDTO.cip}">
+						<h:outputText value="#{PremioDTO.cip}" />
 					</p:column>
-					<p:column headerText="Winner" sortBy="#{wi}">
-						<h:outputText value="#{wi}" />
+					<p:column headerText="Winner" sortBy="#{PremioDTO.nombre_persona}">
+						<h:outputText value="#{PremioDTO.nombre_persona}" />
 					</p:column>
 
 
@@ -353,13 +374,15 @@
 							oncomplete="PF('manageAwardDialog').show()"
 							styleClass="edit-button rounded-button ui-button-success"
 							process="@this">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{PremioDTO}"
+								target="#{FileBean.selectedAwr}" />
 							<p:resetInput target=":dialogsAward:manage-award-content" />
 						</p:commandButton>
 						<p:commandButton class="ui-button-warning rounded-button"
 							icon="pi pi-trash" process="@this"
 							oncomplete="PF('deleteAwardDialog').show()">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{PremioDTO}"
+								target="#{FileBean.selectedAwr}" />
 						</p:commandButton>
 					</p:column>
 
@@ -383,13 +406,14 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Contest</p:outputLabel>
 									<p:autoComplete id="associatedcontestaward" dropdown="true"
-										value="#{selectedAward.ac}" scrollHeight="10" />
+										value="#{FileBean.splitM}" scrollHeight="50"
+										completeMethod="#{FileBean.buscarCertamen}" />
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Award Name</p:outputLabel>
-									<p:inputText id="awardname" value="#{selectedAward.an}"
-										required="true" />
+									<p:inputText id="awardname"
+										value="#{FileBean.selectedAwr.premio}" required="true" />
 								</div>
 
 							</div>
@@ -399,13 +423,15 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Film</p:outputLabel>
 									<p:autoComplete id="associatedfilmaward" dropdown="true"
-										value="#{selectedAward.afa}" scrollHeight="10" />
+										value="#{FileBean.selectedAwr.cip}" scrollHeight="50" 
+										completeMethod="#{FileBean.buscarSencilla}"/>
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Staff Winner</p:outputLabel>
 									<p:autoComplete id="awardwinner" dropdown="true"
-										value="#{selectedAward.aw}" scrollHeight="10" />
+										value="#{FileBean.selectedAwr.nombre_persona}" scrollHeight="50" 
+										completeMethod="#{FileBean.buscarPersona}"/>
 								</div>
 
 							</div>
@@ -415,7 +441,7 @@
 
 					<f:facet name="footer">
 						<p:commandButton value="Save" icon="pi pi-check"
-							actionListener="#{saveAward}" update="manage-award-content"
+							actionListener="#{FileBean.addPremio}" update="manage-award-content"
 							process="manage-award-content @this" />
 						<p:commandButton value="Cancel" icon="pi pi-times"
 							onclick="PF('manageAwardDialog').hide()"
@@ -427,6 +453,9 @@
 					width="300" message="Delete the award?" header="Confirm"
 					severity="warn">
 
+					<p:commandButton value="Yes" icon="pi pi-check"
+						actionListener="#{FileBean.deletePremio}" process="@this"
+						oncomplete="PF('deleteRoomDialog').hide()" />
 
 					<p:commandButton value="No" type="button"
 						styleClass="ui-button-secondary" icon="pi pi-times"
