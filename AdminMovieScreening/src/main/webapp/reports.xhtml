@@ -38,6 +38,11 @@
 					<!-- Panel de botones a la izquierda -->
 					<div class=" buttondisplay">
 						<!-- Botón "Awards by person" abre el diálogo correspondiente -->
+						<p:commandButton value="Screenings by city"
+							oncomplete="PF('screeningsCityDialog').show()"
+							style="width: 100%;">
+						</p:commandButton>
+
 						<p:commandButton value="Awards by person"
 							oncomplete="PF('awardsPersonDialog').show()" style="width: 100%;">
 						</p:commandButton>
@@ -56,7 +61,7 @@
 							style="width: 100%;">
 						</p:commandButton>
 					</div>
-
+  
 					<!-- Espacio de contenido dinámico a la derecha -->
 					<!-- <div class="col-md-8">-->
 					<!-- Diálogo inicial: Mensaje de selección -->
@@ -65,13 +70,11 @@
 						closable="true" draggable="false" width="350px" height="50px">
 						<h:outputText value="Select a button to view content" />
 					</p:dialog>
-
-
-
+					
+					<h:form></h:form>
 
 					<!-- Diálogo/form de Awards by Person -->
 					<h:form id="dialogAwardPerson">
-
 						<p:remoteCommand name="resetPersonName"
 							update="dialogAwardPerson:awardperson">
 							<p:resetInput target="dialogAwardPerson:personname"></p:resetInput>
@@ -86,26 +89,21 @@
 
 								<p:outputPanel>
 
-
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
-											<p:outputLabel>Person Name</p:outputLabel>
-											<p:inputText id="personname" required="true" value="" />
-											<!-- completeMethod="#{autoCompleteView.completeText}" -->
-										</div>
-									</div>
+											<p:commandButton value="Submit Award by Person"
+												actionListener="#{FileBean.report2}" process="@this"
+												update="inputTextAreaAwardsPerson" />
 
-									<div class="row" style="margin-top: 20px">
-										<div class="field" style="width: 350px">
-											<p:commandButton value="Submit Award by Person" />
 										</div>
 									</div>
 
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
 											<p:inputTextarea id="inputTextAreaAwardsPerson" rows="10"
-												autoResize="false" disabled="true" style="overflow: auto;"
-												value="" />
+												autoResize="false" readonly="true" style="overflow: auto;"
+												value="#{FileBean.reporte}" />
+
 										</div>
 									</div>
 
@@ -114,7 +112,42 @@
 							</p:outputPanel>
 						</p:dialog>
 					</h:form>
+					
+					<h:form id="screeningsCityDialog">
 
+						<p:remoteCommand name="resetScreeningsCity"
+							update="screeningsCityDialog:cityscreening">
+							<p:resetInput target="dialogAwardPerson:personname"></p:resetInput>
+						</p:remoteCommand>
+
+						<p:dialog header="Screenings by City" showEffect="fade"
+							modal="true" widgetVar="screeningsCityDialog"
+							onHide="resetScreeningsCity()" responsive="true"
+							draggable="false" resizable="false">
+
+							<p:outputPanel id="cityscreening" class="ui-fluid">
+
+								<p:outputPanel>
+									<div class="row" style="margin-top: 20px">
+
+										<div class="field" style="width: 350px">
+											<p:commandButton value="replace"
+												actionListener="#{FileBean.report1}" process="@this"
+												update="inputTextAreaCitys"></p:commandButton>
+										</div>
+									</div>
+
+									<div class="row" style="margin-top: 20px">
+										<div class="field" style="width: 350px">
+											<p:inputTextarea id="inputTextAreaCitys" rows="10"
+												autoResize="false" style="overflow: auto;"
+												value="#{FileBean.reporte}" readonly="true" />
+										</div>
+									</div>
+								</p:outputPanel>
+							</p:outputPanel>
+						</p:dialog>
+					</h:form>
 
 					<!-- Diálogo/form de Films by Director -->
 					<h:form id="dialogFilmsDirector">
@@ -133,34 +166,20 @@
 
 								<p:outputPanel>
 
-
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
-											<p:outputLabel>Director Name</p:outputLabel>
-											<p:inputText id="directorname" required="true" />
-											<!-- completeMethod="#{autoCompleteView.completeText}" -->
-										</div>
-									</div>
+											<p:commandButton value="Submit Film by Director"
+												actionListener="#{FileBean.report3}" process="@this"
+												update="inputTextAreaFilmDirector" />
 
-									<div class="row" style="margin-top: 20px">
-										<div class="field" style="width: 350px">
-											<p:outputLabel>Work</p:outputLabel>
-											<p:inputText id="directorwork" value="Director"
-												disabled="true" />
-											<!-- completeMethod="#{autoCompleteView.completeText}" -->
-										</div>
-									</div>
-
-									<div class="row" style="margin-top: 20px">
-										<div class="field" style="width: 350px">
-											<p:commandButton value="Submit Film by Director" />
 										</div>
 									</div>
 
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
 											<p:inputTextarea id="inputTextAreaFilmDirector" rows="10"
-												autoResize="false" disabled="true" style="overflow: auto;" />
+												autoResize="false" readonly="true" style="overflow: auto;"
+												value="#{FileBean.reporte}" />
 										</div>
 									</div>
 
@@ -183,39 +202,25 @@
 						<p:dialog header="Revenue per Room" showEffect="fade" modal="true"
 							widgetVar="revenueRoomDialog" onHide="resetRevenueRoom()"
 							responsive="true" draggable="false" resizable="false">
-
+							<p:remoteCommand name="resetRevenueRoom"
+								action="#{FileBean.resetText}" update="inputTextAreaRevenueRoom" />
 							<p:outputPanel id="roomrevenue" class="ui-fluid">
 
 								<p:outputPanel>
 
-
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
-											<p:outputLabel>Cinema Name</p:outputLabel>
-											<p:inputText id="cinemaname" required="true" />
-											<!-- completeMethod="#{autoCompleteView.completeText}" -->
-										</div>
-									</div>
-
-									<div class="row" style="margin-top: 20px">
-										<div class="field" style="width: 350px">
-											<p:outputLabel>Select Room</p:outputLabel>
-											<p:autoComplete id="selectedroomreport" dropdown="true"
-												scrollHeight="10" required="true" />
-											<!-- completeMethod="#{autoCompleteView.completeText}" -->
-										</div>
-									</div>
-
-									<div class="row" style="margin-top: 20px">
-										<div class="field" style="width: 350px">
-											<p:commandButton value="Submit Revenue per Room" />
+											<p:commandButton value="Submit Revenue per Room"
+												actionListener="#{FileBean.report4}" process="@this"
+												update="inputTextAreaRevenueRoom" />
 										</div>
 									</div>
 
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
 											<p:inputTextarea id="inputTextAreaRevenueRoom" rows="10"
-												autoResize="false" disabled="true" style="overflow: auto;" />
+												readonly="true" autoResize="false" style="overflow: auto;"
+												value="#{FileBean.reporte}" />
 										</div>
 									</div>
 
@@ -238,7 +243,8 @@
 							modal="true" widgetVar="screeningsCinemaDialog"
 							onHide="resetScreeningsCinema()" responsive="true"
 							draggable="false" resizable="false">
-
+							<p:remoteCommand name="resetAreaScreenings"
+								action="#{FileBean.resetText}" update="inputTextAreaScreenigs" />
 							<p:outputPanel id="cinemascreening" class="ui-fluid">
 
 								<p:outputPanel>
@@ -248,22 +254,25 @@
 										<div class="field" style="width: 350px">
 											<p:outputLabel>Cinema Name</p:outputLabel>
 											<p:inputText id="cinemanamescreening" required="true"
-												value="" />
+												value="#{FileBean.cine}" />
 											<!-- completeMethod="#{autoCompleteView.completeText}" -->
 										</div>
 									</div>
 
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
-											<p:commandButton value="Submit Screenings by Cinema" />
+											<p:commandButton value="Submit Screenings by Cinema"
+												actionListener="#{FileBean.report5}"
+												process="cinemascreening @this"
+												update="inputTextAreaScreenigs" />
 										</div>
 									</div>
 
 									<div class="row" style="margin-top: 20px">
 										<div class="field" style="width: 350px">
 											<p:inputTextarea id="inputTextAreaScreenigs" rows="10"
-												autoResize="false" disabled="true" style="overflow: auto;"
-												value="" />
+												autoResize="false" style="overflow: auto;"
+												value="#{FileBean.reporte}" readonly="true" />
 										</div>
 									</div>
 

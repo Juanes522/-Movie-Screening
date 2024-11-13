@@ -7,6 +7,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+import org.primefaces.shaded.json.JSONArray;
+import org.primefaces.shaded.json.JSONObject;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -16,8 +19,7 @@ public class HttpClientSynchronous {
 	private static final HttpClient httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1)
 			.connectTimeout(Duration.ofSeconds(10)).build();
 
-	public static void main(String[] args) throws IOException, InterruptedException {
-	}
+	public static void main(String[] args) throws IOException, InterruptedException {}
 
 	public static String doGet(String url) {
 		HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url))

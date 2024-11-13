@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.shaded.json.JSONArray;
+import org.primefaces.shaded.json.JSONObject;
 
+import co.edu.unbosque.controller.HttpClientSynchronous;
 import co.edu.unbosque.model.CertamenDTO;
 import co.edu.unbosque.model.CineDTO;
 import co.edu.unbosque.model.FestivalDTO;
@@ -34,6 +37,10 @@ import jakarta.inject.Named;
 @RequestScoped
 @Named
 public class FileBean {
+
+	// reportes
+	private String cine;
+	private String reporte;
 
 	// cines
 	private CineDAO cdao;
@@ -124,6 +131,10 @@ public class FileBean {
 		adao = new PremioDAO();
 		selectedAwr = new PremioDTO();
 		selectedAws = new ArrayList<>();
+
+		// reportes
+		cine = "";
+		reporte = "";
 
 	}
 
@@ -495,6 +506,150 @@ public class FileBean {
 			}
 		}
 		return resultados;
+	}
+	
+
+
+	public void report1() {
+		String json = HttpClientSynchronous.doGet("http://localhost:8081/user/reporteProyeccionesCiudad");
+		JSONArray jsonArray = new JSONArray(json);
+
+		StringBuilder formattedText = new StringBuilder();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject obj = jsonArray.getJSONObject(i);
+
+			formattedText.append("Ciudad: ").append(obj.getString("ciudad")).append("\n");
+
+			JSONArray proyecciones = obj.getJSONArray("proyecciones");
+			for (int j = 0; j < proyecciones.length(); j++) {
+				JSONObject proyeccion = proyecciones.getJSONObject(j);
+
+				formattedText.append("  Cine: ").append(proyeccion.getString("cine")).append("\n");
+				formattedText.append("  Sala: ").append(proyeccion.getInt("sala")).append("\n");
+				formattedText.append("  Fecha de Estreno: ").append(proyeccion.getString("fechaEstreno")).append("\n");
+				formattedText.append("  Dias desde Estreno: ").append(proyeccion.getInt("diasEstreno")).append("\n");
+				formattedText.append("  Espectadores: ").append(proyeccion.getInt("espectadores")).append("\n");
+				formattedText.append("  Recaudación: ").append(proyeccion.getInt("recaudacion")).append("\n");
+				formattedText.append("\n");
+			}
+		}
+
+		reporte = formattedText.toString();
+
+	}
+
+	public void report2() {
+		String json = HttpClientSynchronous.doGet("http://localhost:8081/user/reportePremiosPersona");
+		JSONArray jsonArray = new JSONArray(json);
+
+		StringBuilder formattedText = new StringBuilder();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject obj = jsonArray.getJSONObject(i);
+
+			formattedText.append("Persona: ").append(obj.getString("persona")).append("\n");
+			formattedText.append("Pelicula: ").append(obj.getString("pelicula")).append("\n");
+			formattedText.append("Premio: ").append(obj.getString("premio")).append("\n");
+			formattedText.append("Festival: ").append(obj.getString("festival")).append("\n");
+			formattedText.append("Certamen: ").append(obj.getInt("certamen")).append("\n");
+			formattedText.append("\n");
+		}
+
+		reporte = formattedText.toString();
+	}
+
+	public void report3() {
+		String json = HttpClientSynchronous.doGet("http://localhost:8081/user/reportePeliculasDirector");
+
+		JSONArray jsonArray = new JSONArray(json);
+
+		StringBuilder formattedText = new StringBuilder();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject obj = jsonArray.getJSONObject(i);
+
+			formattedText.append("Persona: ").append(obj.getString("persona")).append("\n");
+			formattedText.append("Películas: ").append("\n");
+
+			JSONArray peliculas = obj.getJSONArray("peliculas");
+			for (int j = 0; j < peliculas.length(); j++) {
+				formattedText.append("  - ").append(peliculas.getString(j)).append("\n");
+			}
+			formattedText.append("\n");
+		}
+
+		reporte = formattedText.toString();
+	}
+
+	public void report4() {
+		String json = HttpClientSynchronous.doGet("http://localhost:8081/user/reporteRecaudacionPromedio");
+		JSONArray jsonArray = new JSONArray(json);
+
+		StringBuilder textoReporte = new StringBuilder();
+		textoReporte.append("Reporte de recaudación promedio por sala y cine:\n\n");
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			String cine = jsonObject.getString("cine");
+			int sala = jsonObject.getInt("sala");
+			double recaudacionPromedio = jsonObject.getDouble("recaudacionPromedio");
+
+			textoReporte.append("Cine: " + cine + "\n").append("Sala: " + sala + "\n")
+					.append("Recaudación Promedio: $" + recaudacionPromedio + "\n")
+					.append("-------------------------------\n");
+		}
+		this.reporte = textoReporte.toString();
+	}
+
+	public void report5() {
+
+		String json = HttpClientSynchronous.doGet("http://localhost:8081/user/reporteProyeccionesCine?nombre=" + cine);
+
+		JSONArray proyecciones = new JSONArray(json);
+
+		StringBuilder reporte = new StringBuilder();
+		reporte.append("**Reporte de Proyecciones de Películas**\n\n");
+
+		for (int i = 0; i < proyecciones.length(); i++) {
+			JSONObject proyeccion = proyecciones.getJSONObject(i);
+
+			String pelicula = proyeccion.getString("pelicula");
+			int sala = proyeccion.getInt("sala");
+			String fechaEstreno = proyeccion.getString("fechaEstreno");
+			int diasEstreno = proyeccion.getInt("diasEstreno");
+			int espectadores = proyeccion.getInt("espectadores");
+			int recaudacion = proyeccion.getInt("recaudacion");
+
+			reporte.append("1. Película: " + pelicula + "\n");
+			reporte.append("   - Sala: " + sala + "\n");
+			reporte.append("   - Fecha de Estreno: " + fechaEstreno + "\n");
+			reporte.append("   - Días de Estreno: " + diasEstreno + "\n");
+			reporte.append("   - Espectadores: " + espectadores + "\n");
+			reporte.append("   - Recaudación: $" + recaudacion + "\n\n");
+		}
+		this.reporte = reporte.toString();
+
+	}
+
+	public void resetText() {
+		reporte = "";
+	}
+
+	public String getReporte() {
+		return reporte;
+	}
+
+	public void setReporte(String reporte) {
+		this.reporte = reporte;
+	}
+
+	public String getCine() {
+		return cine;
+	}
+
+	public void setCine(String cine) {
+		this.cine = cine;
 	}
 
 	public PremioDAO getAdao() {
