@@ -37,8 +37,9 @@
 
 				<p:toolbar>
 					<p:toolbarGroup>
-						<!-- actionListener="#{newA}" -->
+
 						<p:commandButton value="New Film" icon="pi pi-plus"
+							actionListener="#{FileBean.openNew}"
 							update=":dialogsFilm:manage-film-content"
 							oncomplete="PF('manageFilmDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
@@ -48,10 +49,11 @@
 					</p:toolbarGroup>
 				</p:toolbar>
 
-				<p:dataTable id="dt-film" widgetVar="dtFilm" var="" value="#{film}"
-					reflow="true" styleClass="film-table" selection="#{selectedFilm}"
-					rowKey="#{id}" paginator="true" rows="10" rowSelectMode="add"
-					paginatorPosition="bottom">
+				<p:dataTable id="dt-film" widgetVar="dtFilm" var="PeliculaDTO"
+					value="#{FileBean.pdao.peliculas}" reflow="true"
+					styleClass="film-table" selection="#{FileBean.selectedPelis}"
+					rowKey="#{PeliculaDTO.id}" paginator="true" rows="10"
+					rowSelectMode="add" paginatorPosition="bottom">
 
 					<f:facet name="header">
 						<div class="row">
@@ -62,18 +64,21 @@
 							</div>
 						</div>
 					</f:facet>
-
-					<p:column headerText="Title" sortBy="#{t}">
-						<h:outputText value="#{t}" />
+					<p:column headerText="Cip" sortBy="#{PeliculaDTO.id}">
+						<h:outputText value="#{PeliculaDTO.id}" />
 					</p:column>
-					<p:column headerText="Year of production" sortBy="#{yp}">
-						<h:outputText value="#{yp}" />
+					<p:column headerText="Title" sortBy="#{PeliculaDTO.titulo}">
+						<h:outputText value="#{PeliculaDTO.titulo}" />
 					</p:column>
-					<p:column headerText="Budget" sortBy="#{b}">
-						<h:outputText value="#{b}" />
+					<p:column headerText="Year of production"
+						sortBy="#{PeliculaDTO.ano_produccion}">
+						<h:outputText value="#{PeliculaDTO.ano_produccion}" />
 					</p:column>
-					<p:column headerText="Duration" sortBy="#{an}">
-						<h:outputText value="#{an}" />
+					<p:column headerText="Budget" sortBy="#{PeliculaDTO.presupuesto}">
+						<h:outputText value="#{PeliculaDTO.presupuesto}" />
+					</p:column>
+					<p:column headerText="Duration" sortBy="#{PeliculaDTO.duracion}">
+						<h:outputText value="#{PeliculaDTO.duracion}" />
 					</p:column>
 
 
@@ -84,13 +89,15 @@
 							oncomplete="PF('manageFilmDialog').show()"
 							styleClass="edit-button rounded-button ui-button-success"
 							process="@this">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{PeliculaDTO}"
+								target="#{FileBean.selectedPeli}" />
 							<p:resetInput target=":dialogsFilm:manage-film-content" />
 						</p:commandButton>
 						<p:commandButton class="ui-button-warning rounded-button"
 							icon="pi pi-trash" process="@this"
 							oncomplete="PF('deleteFilmDialog').show()">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{PeliculaDTO}"
+								target="#{FileBean.selectedPeli}" />
 						</p:commandButton>
 					</p:column>
 
@@ -98,7 +105,7 @@
 			</h:form>
 
 
-			<!-- formulario certamen -->
+			<!-- formulario pelicula -->
 			<h:form id="dialogsFilm">
 				<p:dialog header="Film Details" showEffect="fade" modal="true"
 					widgetVar="manageFilmDialog" responsive="true" draggable="false"
@@ -113,15 +120,16 @@
 
 								<div class="field col-md-6">
 									<p:outputLabel>Title</p:outputLabel>
-									<p:inputText id="titlefilm" value="#{selectedFilm.title}"
-										required="true" />
+									<p:inputText id="titlefilm"
+										value="#{FileBean.selectedPeli.titulo}" required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Year of Production</p:outputLabel>
 									<p:spinner id="yearproduction" min="1900" max="2024"
-										value="#{selectedFilm.yearp}" required="true" />
+										value="#{FileBean.selectedPeli.ano_produccion}"
+										required="true" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
@@ -131,14 +139,14 @@
 
 								<div class="field col-md-6">
 									<p:outputLabel>Nationality</p:outputLabel>
-									<p:inputText id="nationality" value="#{selectedFilm.nat}"
-										required="true" />
+									<p:inputText id="nationality"
+										value="#{FileBean.selectedPeli.nacionalidad}" required="true" />
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Budget</p:outputLabel>
 									<p:spinner id="budget" min="1000000"
-										value="#{selectedFilm.budget}" required="true" />
+										value="#{FileBean.selectedPeli.presupuesto}" required="true" />
 								</div>
 
 							</div>
@@ -147,17 +155,8 @@
 
 								<div class="field col-md-6">
 									<p:outputLabel>Duration</p:outputLabel>
-									<p:inputText id="duration" value="#{selectedFilm.dur}"
-										required="true" />
-								</div>
-
-								<div class="field col-md-6">
-									<p:outputLabel>Choose Staff</p:outputLabel>
-									<p:selectCheckboxMenu id="choosestaff"
-										value="#{selectedFilm.staffselected}" scrollHeight="10"
-										filter="true">
-										<f:selectItems value="#{selectedFilm.staff}" />
-									</p:selectCheckboxMenu>
+									<p:inputText id="duration"
+										value="#{FileBean.selectedPeli.duracion}" required="true" />
 								</div>
 
 							</div>
@@ -168,8 +167,8 @@
 
 					<f:facet name="footer">
 						<p:commandButton value="Save" icon="pi pi-check"
-							actionListener="#{saveFilm}" update="manage-film-content"
-							process="manage-film-content @this" />
+							actionListener="#{FileBean.saveMovie}"
+							update="manage-film-content" process="manage-film-content @this" />
 						<p:commandButton value="Cancel" icon="pi pi-times"
 							onclick="PF('manageFilmDialog').hide()"
 							class="ui-button-secondary" type="button" />
@@ -180,6 +179,9 @@
 					width="300" message="Delete the film?" header="Confirm"
 					severity="warn">
 
+					<p:commandButton value="Yes" icon="pi pi-check"
+						actionListener="#{FileBean.deleteMovie}" process="@this"
+						oncomplete="PF('deleteFilmDialog').hide()" />
 
 					<p:commandButton value="No" type="button"
 						styleClass="ui-button-secondary" icon="pi pi-times"
@@ -207,8 +209,9 @@
 
 				<p:toolbar>
 					<p:toolbarGroup>
-						<!-- actionListener="#{newA}" -->
+
 						<p:commandButton value="New Screening" icon="pi pi-plus"
+							actionListener="#{FileBean.openNew}"
 							update=":dialogsScreening:manage-screening-content"
 							oncomplete="PF('manageScreeningDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
@@ -218,10 +221,12 @@
 					</p:toolbarGroup>
 				</p:toolbar>
 
-				<p:dataTable id="dt-screening" widgetVar="dtScreening" var=""
-					value="#{screening}" reflow="true" styleClass="screening-table"
-					selection="#{selectedScreening}" rowKey="#{id}" paginator="true"
-					rows="10" rowSelectMode="add" paginatorPosition="bottom">
+				<p:dataTable id="dt-screening" widgetVar="dtScreening"
+					var="ProyeccionDTO" value="#{FileBean.rdao.proyecciones}"
+					reflow="true" styleClass="screening-table"
+					selection="#{FileBean.selectedPros}" rowKey="#{ProyeccionDTO.cip}"
+					paginator="true" rows="10" rowSelectMode="add"
+					paginatorPosition="bottom">
 
 					<f:facet name="header">
 						<div class="row">
@@ -233,23 +238,26 @@
 						</div>
 					</f:facet>
 
-					<p:column headerText="Movie" sortBy="#{m}">
-						<h:outputText value="#{m}" />
+					<p:column headerText="Movie" sortBy="#{ProyeccionDTO.name}">
+						<h:outputText value="#{ProyeccionDTO.name}" />
 					</p:column>
-					<p:column headerText="Cinema" sortBy="#{ci}">
-						<h:outputText value="#{ci}" />
+					<p:column headerText="Cinema" sortBy="#{ProyeccionDTO.cine}">
+						<h:outputText value="#{ProyeccionDTO.cine}" />
 					</p:column>
-					<p:column headerText="Room" sortBy="#{o}">
-						<h:outputText value="#{o}" />
+					<p:column headerText="Room" sortBy="#{ProyeccionDTO.sala}">
+						<h:outputText value="#{ProyeccionDTO.sala}" />
 					</p:column>
-					<p:column headerText="Release date" sortBy="#{rd}">
-						<h:outputText value="#{rd}" />
+					<p:column headerText="Release date"
+						sortBy="#{ProyeccionDTO.fechaEstreno}">
+						<h:outputText value="#{ProyeccionDTO.fechaEstreno}" />
 					</p:column>
-					<p:column headerText="Viewers" sortBy="#{v}">
-						<h:outputText value="#{v}" />
+					<p:column headerText="Viewers"
+						sortBy="#{ProyeccionDTO.espectadores}">
+						<h:outputText value="#{ProyeccionDTO.espectadores}" />
 					</p:column>
-					<p:column headerText="Earnings" sortBy="#{e}">
-						<h:outputText value="#{e}" />
+					<p:column headerText="Earnings"
+						sortBy="#{ProyeccionDTO.recaudacion}">
+						<h:outputText value="#{ProyeccionDTO.recaudacion}" />
 					</p:column>
 
 
@@ -260,13 +268,15 @@
 							oncomplete="PF('manageScreeningDialog').show()"
 							styleClass="edit-button rounded-button ui-button-success"
 							process="@this">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{ProyeccionDTO}"
+								target="#{FileBean.selectedProy}" />
 							<p:resetInput target=":dialogsScreening:manage-screening-content" />
 						</p:commandButton>
 						<p:commandButton class="ui-button-warning rounded-button"
 							icon="pi pi-trash" process="@this"
 							oncomplete="PF('deleteScreeningDialog').show()">
-							<f:setPropertyActionListener value="#{s}" target="#{s}" />
+							<f:setPropertyActionListener value="#{ProyeccionDTO}"
+								target="#{FileBean.selectedProy}" />
 						</p:commandButton>
 					</p:column>
 
@@ -290,16 +300,17 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Movie</p:outputLabel>
 									<p:autoComplete id="screeningmovie" dropdown="true"
-										value="#{selectedScreening.m}" scrollHeight="10" required="true" />
+										value="#{FileBean.splitM}" scrollHeight="50" required="true"
+										completeMethod="#{FileBean.buscarPeli}" />
 									<!-- completeMethod="#{autoCompleteView.completeText}" -->
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Cinema</p:outputLabel>
 									<p:autoComplete id="screeningcinema" dropdown="true"
-										value="#{selectedScreening.c}" scrollHeight="10"
-										required="true" />
-									<!-- completeMethod="#{autoCompleteView.completeText}" -->
+										value="#{FileBean.selectedProy.cine}" scrollHeight="50"
+										required="true" completeMethod="#{FileBean.buscarCine}" />
+
 								</div>
 
 							</div>
@@ -309,14 +320,15 @@
 								<div class="field col-md-6">
 									<p:outputLabel>Associated Room</p:outputLabel>
 									<p:autoComplete id="screeningroom" dropdown="true"
-										value="#{selectedScreening.r}" scrollHeight="10"
-										required="true" />
+										value="#{FileBean.selectedProy.sala}" scrollHeight="50"
+										required="true" completeMethod="#{FileBean.buscarSalas}" />
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Release Date</p:outputLabel>
-									<p:calendar id="screeningdate" value="#{selectedScreening.d}"
-										showOn="button" pattern="MM/dd/yyyy" required="true" />
+									<p:calendar id="screeningdate"
+										value="#{FileBean.selectedProy.fechaEstreno}" showOn="button"
+										pattern="MM/dd/yyyy" required="true" />
 								</div>
 
 							</div>
@@ -325,14 +337,14 @@
 
 								<div class="field col-md-6">
 									<p:outputLabel>Viewers</p:outputLabel>
-									<p:spinner id="screeningviewers" min="0" value="#{selectedScreening.v}"
-										required="true" />
+									<p:spinner id="screeningviewers" min="0"
+										value="#{FileBean.selectedProy.espectadores}" required="true" />
 								</div>
 
 								<div class="field col-md-6">
 									<p:outputLabel>Earnings</p:outputLabel>
-									<p:spinner id="screeningearnings" min="0" value="#{selectedScreening.e}"
-										required="true" />
+									<p:spinner id="screeningearnings" min="0"
+										value="#{FileBean.selectedProy.recaudacion}" required="true" />
 								</div>
 
 							</div>
@@ -343,7 +355,7 @@
 
 					<f:facet name="footer">
 						<p:commandButton value="Save" icon="pi pi-check"
-							actionListener="#{saveScreening}"
+							actionListener="#{FileBean.saveProy}"
 							update="manage-screening-content"
 							process="manage-screening-content @this" />
 						<p:commandButton value="Cancel" icon="pi pi-times"
@@ -356,6 +368,9 @@
 					width="300" message="Delete the screening?" header="Confirm"
 					severity="warn">
 
+					<p:commandButton value="Yes" icon="pi pi-check"
+						actionListener="#{FileBean.deleteProy}" process="@this"
+						oncomplete="PF('deleteRoomDialog').hide()" />
 
 					<p:commandButton value="No" type="button"
 						styleClass="ui-button-secondary" icon="pi pi-times"

@@ -3,10 +3,133 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd"
 	version="3.0">
-	<!--<managed-bean>-->
-		<!--<managed-bean-name></managed-bean-name> -->
-		<!--<managed-bean-class>co.edu.unbosque.beans</managed-bean-class>   -->
-		<!--<managed-bean-scope>session</managed-bean-scope>-->
-	<!--</managed-bean>-->
-		
+	<managed-bean>
+		<managed-bean-name>FileBean</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.beans.FileBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>CineDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.CineDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>CineDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.CineDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- salas -->
+	<!-- salas -->
+	<!-- salas -->
+
+	<managed-bean>
+		<managed-bean-name>SalaDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.SalaDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>SalaDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.SalaDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Peliculas -->
+	<!-- Peliculas -->
+	<!-- Peliculas -->
+	<managed-bean>
+		<managed-bean-name>PeliculaDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.PeliculaDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>PeliculaDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.PeliculaDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Proyecciones -->
+	<!-- Proyecciones -->
+	<!-- Proyecciones -->
+	<managed-bean>
+		<managed-bean-name>ProyeccionDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.ProyeccionDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>ProyeccionDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.ProyeccionDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Festivales -->
+	<!-- Festivales -->
+	<!-- Festivales -->
+	<managed-bean>
+		<managed-bean-name>FestivalDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.FestivalDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>FestivalDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.FestivalDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- certamenes -->
+	<!-- certamenes -->
+	<!-- certamenes -->
+	<managed-bean>
+		<managed-bean-name>CertamenDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.CertamenDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>CertamenDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.CertamenDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Trabajo -->
+	<!-- Trabajo -->
+	<!-- Trabajo -->
+	<managed-bean>
+		<managed-bean-name>TrabajoDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.TrabajoDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>TrabajoDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.TrabajoDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Personas -->
+	<!-- Personas -->
+	<!-- Personas -->
+	<managed-bean>
+		<managed-bean-name>PersonaDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.PersonaDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>PersonaDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.PersonaDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Premio -->
+	<!-- Premio -->
+	<!-- Premio -->
+	<managed-bean>
+		<managed-bean-name>PremioDTO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.PremioDTO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>PremioDAO</managed-bean-name>
+		<managed-bean-class>co.edu.unbosque.model.persistence.PremioDAO</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 </faces-config> 
